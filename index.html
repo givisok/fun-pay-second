@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#29bc5e"/>
+    <title>Second test</title>
+    <link href="assets/css/style.css" rel="stylesheet"/>
+    <script src="assets/js/libs.js"></script>
+    <script src="assets/js/app.js"></script>
+</head>
+<body>
+
+<div class="row example">
+    <div class="col-md-6 col-md-offset-3">
+        <h2>Second test</h2>
+        <blockquote>
+            <p>Test function: <code>App.test.testFunction(url);</code></p>
+        </blockquote>
+        <button class="btn btn-primary center-block"
+                onclick="App.test.testFunction('test.html');">
+            Launch test function
+        </button>
+    </div>
+</div>
+
+<div class="modal fade" id="test-modal" tabindex="-1" role="dialog" aria-labelledby="testModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="test-modal-header"></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
