@@ -11,32 +11,42 @@
     <script src="assets/js/app.js"></script>
 </head>
 <body>
-
-<div class="row example">
-    <div class="col-md-6 col-md-offset-3">
-        <h2>Second test</h2>
-        <blockquote>
-            <p>Test function: <code>App.test.testFunction(url);</code></p>
-        </blockquote>
-        <button class="btn btn-primary center-block"
-                onclick="App.test.testFunction('test.html');">
-            Launch test function
-        </button>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h2>Second test</h2>
+            <blockquote>
+                <p>Test function: <code>App.test.testFunction(url);</code></p>
+            </blockquote>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-2">
+                    <button class="btn btn-primary center-block"
+                            onclick="App.test.testFunction('/test.html');">
+                        Launch test function
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary center-block"
+                            onclick="App.test.testFunction('/d.html');">
+                        Launch with error
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
-<div class="modal fade" id="test-modal" tabindex="-1" role="dialog" aria-labelledby="testModalLabel" aria-hidden="true">
-
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="test-modal-header"></h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <div class="modal fade" id="test-modal" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="test-modal-header"></h4>
+                </div>
+                <div class="modal-body modal-body-overflow">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>

@@ -1,28 +1,56 @@
 var App = App || {};
 
 (function (App, $) {
+    /**
+     * Insert html with animation or not :)
+     * @param data
+     * @param animate - bool show with animation
+     * @returns {jQuery}
+     */
+    $.fn.putHtml = function (data, animate) {
+        var currentObject = this;
+        if (animate) {
+            var promise = currentObject.fadeOut(400).promise();
+            promise.done(function () {
+                currentObject.html(data);
+                currentObject.fadeIn(400);
+            });
+        } else {
+            currentObject.html(data);
+        }
+
+        return this;
+    };
+
     App.debug = true;//false for production
     App.modal = function () {
-        var modalSelector, modalHeader, modalBody, modalFooter;
+        var modalSelector, modalHeader, modalBody, modalFooter, modalContent;
 
         $(document).ready(function () {
             modalSelector = $('#test-modal');
+            modalContent = modalSelector.find('.modal-content');
             modalHeader = modalSelector.find('#test-modal-header');
             modalBody = modalSelector.find('.modal-body');
             modalFooter = modalSelector.find('.modal-footer');
+
+            modalSelector.on('hidden.bs.modal', function () {
+                modalHeader.html('');
+                modalBody.html('');
+                modalContent.removeClass().addClass('modal-content');
+            })
         });
 
         return {
             show: function () {
-                return modalSelector.modal('show');
+                modalSelector.modal('show');
             },
 
             hide: function () {
-                return modalSelector.modal('hide');
+                modalSelector.modal('hide');
             },
 
             setBody: function (data) {
-                modalBody.html(data);
+                modalBody.putHtml(data, true);
             },
 
             setHeader: function (data) {
@@ -34,7 +62,20 @@ var App = App || {};
             },
 
             showPreLoader: function () {
-                this.setBody('<div class="center-block"><img src="images/ajax-loader.gif"></div>');
+                var preLoader = '<div class="row"><div class="center-block col-md-2 pre-loader-center"><img src="images/ajax-loader.gif"></div></div>';
+                modalBody.html(preLoader);
+            },
+
+            setError: function (errorText) {
+                App.modal.setHeader('Error');
+                modalContent.addClass('modal-error');
+                var errorMessage = '<div class="alert" role="alert">';
+                errorMessage += '<strong>If the problem persists please contact us support@hell.yeah</strong>';
+                if (App.debug) {
+                    errorMessage += '<br><br>' + errorText;
+                }
+                errorMessage += '</div>';
+                App.modal.setBody(errorMessage);
             }
         }
     }();
@@ -42,37 +83,26 @@ var App = App || {};
     App.test = {
         testFunction: function (url) {
             App.modal.setHeader('Loading...');
-            App.modal.showPreLoader();
+            App.modal.showPreLoader(false);
             App.modal.show();
-
-            function showError(errorText) {
-                App.modal.setHeader('Error');
-
-                var errorMessage = ' <strong>If the problem persists please contact us support@hell.yeah</strong>';
-                if (App.debug) {
-                    errorMessage += '<br><br>' + errorText;
-                }
-                App.modal.setBody(errorMessage);
-            }
 
             try {
                 var request = App.request.make({url: url});
             } catch (e) {
-                showError(e.toString());
+                App.modal.setError(e.toString());
             }
 
             request.done(function (data) {
-                if(data) {
-                    App.modal.setHeader('Header');
+                if (data) {
+                    App.modal.setHeader('Some header');
                     App.modal.setBody(data);
                 } else {
-                    showError('Empty answer!');
+                    App.modal.setError('Empty answer!');
                 }
             });
 
             request.fail(function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR.statusCode());
-                showError('Request error:' + jqXHR.statusCode() + errorThrown);
+                App.modal.setError('Request error:' + jqXHR.status + ' ' + errorThrown);
             });
         }
     };
@@ -95,7 +125,6 @@ var App = App || {};
          * @param params - ajax params {url, method, data}
          */
         make: function (params) {
-
             if (!App.helpers.isObject(params)) {
                 throw new TypeError('Bad params type. Wait type object, but ' + typeof params + ' given');
             }
@@ -103,7 +132,6 @@ var App = App || {};
             if (!App.request.validateUrl(params.url)) {
                 throw new Error('Url invalid');
             }
-
             params.method = App.helpers.setDefaultValue(params.method, 'GET');
             var availMethods = ['GET', 'POST', 'DELETE', 'PUT'];
             if (!App.helpers.isString(params.method) || availMethods.indexOf(params.method) === -1) {
@@ -128,7 +156,6 @@ var App = App || {};
          * @returns {boolean}
          */
         validateUrl: function (url) {
-
             if (!App.helpers.isString(url)) {
                 throw new TypeError('Bad url type. Wait type string, but ' + typeof url + ' given');
             }

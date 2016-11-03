@@ -4215,6 +4215,18 @@ a.label:hover, a.label:focus {
 .example {
   margin-top: 5%; }
 
+.pre-loader-center {
+  float: none;
+  text-align: center; }
+
+.modal-error {
+  background-color: #f2dede !important;
+  color: #a94442; }
+
+.modal-body-overflow {
+  max-height: calc(100vh - 210px);
+  overflow-y: auto; }
+
 .jumbotron {
   padding-top: 30px;
   padding-bottom: 30px;
@@ -5697,5 +5709,17 @@ button.close {
 
 .example {
   margin-top: 5%; }
+
+.pre-loader-center {
+  float: none;
+  text-align: center; }
+
+.modal-error {
+  background-color: #f2dede !important;
+  color: #a94442; }
+
+.modal-body-overflow {
+  max-height: calc(100vh - 210px);
+  overflow-y: auto; }
 
 /*# sourceMappingURL=style.css.map */
