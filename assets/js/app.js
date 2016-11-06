@@ -2,32 +2,20 @@ var App = App || {};
 
 (function (App, $) {
     /**
-     * Insert html with animation or not :)
-     * @param data
-     * @param animate - bool show with animation
-     * @returns {jQuery}
+     *
+     * @returns {boolean}
      */
-    $.fn.putHtml = function (data, animate) {
-        var currentObject = this;
-        if (animate) {
-            var promise = currentObject.fadeOut(400).promise();
-            promise.done(function () {
-                currentObject.html(data);
-                currentObject.fadeIn(400);
-            });
-        } else {
-            currentObject.html(data);
-        }
-
-        return this;
+    $.fn.isScrollable = function () {
+        return this.get(0).scrollHeight > this.height();
     };
 
     App.debug = true;//false for production
     App.modal = function () {
-        var modalSelector, modalHeader, modalBody, modalFooter, modalContent;
+        var modalSelector, modalHeader, modalBody, modalFooter, modalContent, scrollBarWidth;
 
         $(document).ready(function () {
             modalSelector = $('#test-modal');
+            scrollBarWidth = App.helpers.scrollBarWidth();
             modalContent = modalSelector.find('.modal-content');
             modalHeader = modalSelector.find('#test-modal-header');
             modalBody = modalSelector.find('.modal-body');
@@ -36,23 +24,38 @@ var App = App || {};
             modalSelector.on('hidden.bs.modal', function () {
                 modalHeader.html('');
                 modalBody.html('');
+                modalSelector.css("padding-left", "");
                 modalContent.removeClass().addClass('modal-content');
+                modalSelector.off('shown.bs.modal');
             })
         });
+
+        function fixScrollBarBug() {
+            if (modalSelector.isScrollable()) {
+                modalSelector.css("padding-left", scrollBarWidth);
+            } else {
+                modalSelector.css("padding-left", '');
+            }
+        }
 
         return {
             show: function () {
                 modalSelector.modal('show');
             },
-
             hide: function () {
                 modalSelector.modal('hide');
             },
-
             setBody: function (data) {
-                modalBody.putHtml(data, true);
+                if (!modalSelector.hasClass('in')) {
+                    modalSelector.on('shown.bs.modal', function () {
+                        modalBody.html(data);
+                        fixScrollBarBug();
+                    });
+                } else {
+                    modalBody.html(data);
+                    fixScrollBarBug();
+                }
             },
-
             setHeader: function (data) {
                 modalHeader.html(data);
             },
@@ -85,11 +88,11 @@ var App = App || {};
             App.modal.setHeader('Loading...');
             App.modal.showPreLoader(false);
             App.modal.show();
-
             try {
                 var request = App.request.make({url: url});
             } catch (e) {
                 App.modal.setError(e.toString());
+                return;
             }
 
             request.done(function (data) {
@@ -116,6 +119,27 @@ var App = App || {};
         },
         setDefaultValue: function (value, defaultValue) {
             return typeof value !== 'undefined' ? value : defaultValue;
+        },
+        isCallback: function (callback) {
+            return typeof callback === 'function';
+        },
+        scrollBarWidth: function () {
+            var outer = $('<div>');
+            var body = $('body');
+            outer.css({
+                "visibility": "hidden",
+                "width": "100px"
+            });
+            body.append(outer);
+            var widthNoScroll = outer.outerWidth();
+            outer.css({"overflow": "scroll"});
+            var inner = $('<div>');
+            inner.css("width", "100%");
+            outer.append(inner);
+            var widthWithScroll = inner.outerWidth();
+            outer.remove();
+
+            return widthNoScroll - widthWithScroll;
         }
     };
 

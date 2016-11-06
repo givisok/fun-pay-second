@@ -4212,20 +4212,43 @@ a.label:hover, a.label:focus {
   .label-danger[href]:hover, .label-danger[href]:focus {
     background-color: #c9302c; }
 
-.example {
-  margin-top: 5%; }
+.badge {
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  background-color: #777777;
+  border-radius: 10px; }
+  .badge:empty {
+    display: none; }
+  .btn .badge {
+    position: relative;
+    top: -1px; }
+  .btn-xs .badge, .btn-group-xs > .btn .badge,
+  .btn-group-xs > .btn .badge {
+    top: 0;
+    padding: 1px 5px; }
+  .list-group-item.active > .badge,
+  .nav-pills > .active > a > .badge {
+    color: #337ab7;
+    background-color: #fff; }
+  .list-group-item > .badge {
+    float: right; }
+  .list-group-item > .badge + .badge {
+    margin-right: 5px; }
+  .nav-pills > li > a > .badge {
+    margin-left: 3px; }
 
-.pre-loader-center {
-  float: none;
-  text-align: center; }
-
-.modal-error {
-  background-color: #f2dede !important;
-  color: #a94442; }
-
-.modal-body-overflow {
-  max-height: calc(100vh - 210px);
-  overflow-y: auto; }
+a.badge:hover, a.badge:focus {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer; }
 
 .jumbotron {
   padding-top: 30px;
@@ -5710,16 +5733,24 @@ button.close {
 .example {
   margin-top: 5%; }
 
+body {
+  padding-right: 0 !important; }
+
 .pre-loader-center {
   float: none;
   text-align: center; }
+
+.modal-open, .modal-open .navbar-fixed-top {
+  margin-right: auto !important; }
+
+.modal {
+  overflow-y: auto; }
 
 .modal-error {
   background-color: #f2dede !important;
   color: #a94442; }
 
 .modal-body-overflow {
-  max-height: calc(100vh - 210px);
   overflow-y: auto; }
 
 /*# sourceMappingURL=style.css.map */
